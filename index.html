@@ -1,0 +1,1708 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>雅思口语题库</title>
+  <script src="https://cdn.jsdelivr.net/npm/mammoth@1.8.0/mammoth.browser.min.js"></script>
+  <style>
+    :root {
+      --ink: #1b2430;
+      --muted: #667085;
+      --line: #d8dee8;
+      --paper: #ffffff;
+      --wash: #f4f7fb;
+      --blue: #2367c9;
+      --green: #258a67;
+      --amber: #c87919;
+      --red: #c74242;
+      --shadow: 0 14px 36px rgba(27, 36, 48, .10);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background: var(--wash);
+      font-family: "Microsoft YaHei", "PingFang SC", "Segoe UI", Arial, sans-serif;
+      letter-spacing: 0;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .app {
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      padding: 24px 18px;
+      background: #fff;
+      border-right: 1px solid var(--line);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+
+    .mark {
+      display: grid;
+      width: 44px;
+      height: 44px;
+      place-items: center;
+      color: #fff;
+      background: var(--ink);
+      border-radius: 8px;
+      font-weight: 800;
+    }
+
+    .brand strong {
+      display: block;
+      font-size: 18px;
+    }
+
+    .brand span {
+      display: block;
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .stats {
+      display: grid;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .stat {
+      padding: 14px;
+      background: #f8fafc;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .stat b {
+      display: block;
+      margin-top: 4px;
+      font-size: 26px;
+      line-height: 1;
+    }
+
+    .nav {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .nav button {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 42px;
+      padding: 0 12px;
+      color: #354052;
+      background: transparent;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      text-align: left;
+    }
+
+    .nav button.active {
+      color: #fff;
+      background: var(--blue);
+      border-color: var(--blue);
+    }
+
+    .hint {
+      padding: 12px;
+      color: #4f5d75;
+      background: #fff7e8;
+      border: 1px solid #f0d7ab;
+      border-radius: 8px;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    main {
+      min-width: 0;
+      padding: 28px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 30px;
+      line-height: 1.2;
+    }
+
+    .subtitle {
+      margin: 8px 0 0;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+
+    .page-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 0 0 18px;
+    }
+
+    .page-tab.active {
+      color: #fff;
+      background: var(--blue);
+      border-color: var(--blue);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 40px;
+      padding: 0 14px;
+      color: var(--ink);
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+
+    .btn.primary {
+      color: #fff;
+      background: var(--green);
+      border-color: var(--green);
+    }
+
+    .btn.danger {
+      color: #fff;
+      background: var(--red);
+      border-color: var(--red);
+    }
+
+    .btn.icon {
+      width: 38px;
+      padding: 0;
+    }
+
+    .btn.small {
+      min-height: 34px;
+      padding: 0 10px;
+      font-size: 13px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .grid.hidden,
+    .manage-view.hidden,
+    .study-view.hidden {
+      display: none;
+    }
+
+    .panel {
+      padding: 18px;
+      background: rgba(255, 255, 255, .96);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    .panel + .panel {
+      margin-top: 18px;
+    }
+
+    .panel-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 18px;
+    }
+
+    .controls {
+      display: grid;
+      grid-template-columns: minmax(190px, 1fr) 140px 150px;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .field {
+      display: grid;
+      gap: 6px;
+    }
+
+    label {
+      color: #4d5a70;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      color: var(--ink);
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      outline: none;
+    }
+
+    input,
+    select {
+      min-height: 40px;
+      padding: 0 12px;
+    }
+
+    textarea {
+      min-height: 108px;
+      padding: 12px;
+      resize: vertical;
+      line-height: 1.6;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 4px rgba(35, 103, 201, .12);
+    }
+
+    .upload {
+      display: grid;
+      gap: 12px;
+      padding: 16px;
+      background: #f8fafc;
+      border: 1px dashed #aeb9cb;
+      border-radius: 8px;
+    }
+
+    .upload-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .file-name {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .status {
+      min-height: 22px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .topic {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 12px;
+      padding: 14px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+
+    .topic.done {
+      background: #f7fbf9;
+      border-color: #bddccd;
+    }
+
+    .topic h3 {
+      margin: 0 0 8px;
+      font-size: 16px;
+      line-height: 1.4;
+    }
+
+    .topic p {
+      margin: 0;
+      color: #4f5d75;
+      line-height: 1.55;
+      white-space: pre-wrap;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: 10px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      padding: 0 8px;
+      color: #41506a;
+      background: #eef2f7;
+      border-radius: 999px;
+      font-size: 12px;
+    }
+
+    .pill.p1 {
+      color: #184c9e;
+      background: #e6f0ff;
+    }
+
+    .pill.p2 {
+      color: #7c450c;
+      background: #fff0d9;
+    }
+
+    .topic-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-width: 86px;
+    }
+
+    .pager {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .pager span {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .manage-view {
+      display: grid;
+      grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .manage-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .manage-item {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: center;
+      padding: 12px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+
+    .manage-item strong {
+      display: block;
+      margin-bottom: 6px;
+      line-height: 1.35;
+    }
+
+    .study-view {
+      max-width: 980px;
+    }
+
+    .study-card {
+      min-height: 62vh;
+      padding: 24px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    .study-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .study-title {
+      margin: 12px 0 0;
+      font-size: 26px;
+      line-height: 1.35;
+    }
+
+    .study-body {
+      margin-top: 18px;
+      color: #354052;
+      font-size: 17px;
+      line-height: 1.85;
+    }
+
+    .study-body p {
+      margin: 0 0 14px;
+    }
+
+    .study-body .question {
+      margin-top: 22px;
+      color: var(--ink);
+      font-weight: 800;
+    }
+
+    .study-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    .empty {
+      padding: 30px 18px;
+      color: var(--muted);
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      text-align: center;
+      line-height: 1.7;
+    }
+
+    .form-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .two {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .checkbox {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      color: #445166;
+      font-size: 14px;
+      font-weight: 400;
+    }
+
+    .checkbox input {
+      width: 18px;
+      min-height: 18px;
+    }
+
+    .sample {
+      margin: 0;
+      color: #536179;
+      font-size: 13px;
+      line-height: 1.65;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 1040px) {
+      .app {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        display: grid;
+        grid-template-columns: minmax(190px, 1fr) minmax(220px, 1fr);
+        gap: 14px;
+        padding: 14px;
+      }
+
+      .brand,
+      .stats,
+      .nav {
+        margin: 0;
+      }
+
+      .hint {
+        display: none;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 720px) {
+      main {
+        padding: 18px 14px;
+      }
+
+      .topbar,
+      .sidebar {
+        grid-template-columns: 1fr;
+      }
+
+      .topbar {
+        flex-direction: column;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+
+      .actions,
+      .controls,
+      .two,
+      .manage-view {
+        grid-template-columns: 1fr;
+      }
+
+      .actions,
+      .btn {
+        width: 100%;
+      }
+
+      .topic {
+        grid-template-columns: 1fr;
+      }
+
+      .topic-actions {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        min-width: 0;
+      }
+
+      .manage-item {
+        grid-template-columns: 1fr;
+      }
+
+      .study-head {
+        flex-direction: column;
+      }
+
+      .study-title {
+        font-size: 22px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div>
+        <div class="brand">
+          <div class="mark">S</div>
+          <div>
+            <strong>雅思口语题库</strong>
+            <span>Part 1 / Part 2 管理</span>
+          </div>
+        </div>
+        <div class="stats">
+          <div class="stat"><span>总话题</span><b id="totalCount">0</b></div>
+          <div class="stat"><span>已练习</span><b id="doneCount">0</b></div>
+        </div>
+      </div>
+      <div>
+        <div class="nav" aria-label="题目分类">
+          <button class="active" data-filter-part="all" type="button">全部 <span id="allCount">0</span></button>
+          <button data-filter-part="P1" type="button">Part 1 <span id="p1Count">0</span></button>
+          <button data-filter-part="P2" type="button">Part 2 <span id="p2Count">0</span></button>
+          <button data-filter-part="done" type="button">已练习 <span id="doneNavCount">0</span></button>
+        </div>
+        <div class="hint">Word 里写 “P1 / Part 1 / 第一部分” 和 “P2 / Part 2 / 第二部分”，系统会按标题自动归类。</div>
+      </div>
+    </aside>
+
+    <main>
+      <header class="topbar">
+        <div>
+          <h1>把口语题目收进一个清爽题库</h1>
+          <p class="subtitle">上传 Word 或文本后自动识别 P1、P2；题目会保存在这个浏览器里，方便之后继续整理和练习。</p>
+        </div>
+        <div class="actions">
+          <button class="btn" id="exportBtn" type="button">导出数据</button>
+          <input id="jsonImportInput" type="file" accept=".json" class="hidden">
+          <button class="btn" id="importJsonBtn" type="button">导入备份</button>
+          <button class="btn danger" id="clearBtn" type="button">清空</button>
+        </div>
+      </header>
+
+      <div class="page-tabs" aria-label="页面导航">
+        <button class="btn page-tab active" id="libraryTab" type="button">题库浏览</button>
+        <button class="btn page-tab" id="manageTab" type="button">新增 / 管理</button>
+      </div>
+
+      <div class="grid" id="libraryView">
+        <section>
+          <div class="panel">
+            <div class="panel-title">
+              <h2>导入 Word</h2>
+            </div>
+            <div class="upload">
+              <div class="upload-row">
+                <input id="fileInput" type="file" accept=".docx,.txt,.md">
+                <button class="btn primary" id="importBtn" type="button">识别并导入</button>
+              </div>
+              <div class="file-name" id="fileName">支持 .docx、.txt、.md。Part 2 讲义可按“每页/每个题目块”自动识别。</div>
+              <div class="status" id="status"></div>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-title">
+              <h2>题目列表</h2>
+            </div>
+            <div class="controls">
+              <input id="searchInput" type="search" placeholder="搜索题目、备注或标签">
+              <select id="partSelect" aria-label="筛选部分">
+                <option value="all">全部</option>
+                <option value="P1">Part 1</option>
+                <option value="P2">Part 2</option>
+                <option value="done">已练习</option>
+              </select>
+              <select id="sortSelect" aria-label="排序">
+                <option value="newest">最新在前</option>
+                <option value="oldest">最早在前</option>
+                <option value="az">按题目 A-Z</option>
+              </select>
+            </div>
+            <div class="list" id="topicList"></div>
+            <div class="pager" id="pager"></div>
+          </div>
+        </section>
+
+        <aside>
+          <div class="panel">
+            <div class="panel-title">
+              <h2>Word 格式示例</h2>
+            </div>
+            <p class="sample">
+              P1<br>
+              Tidiness<br>
+              Do you like to keep things tidy?<br>
+              Definitely yes, because...<br>
+              Did you use to keep your room tidy as a child?<br>
+              To be honest...<br><br>
+              P2 也可以每页放一个话题，系统会把小问题和答案放进备注。
+            </p>
+          </div>
+        </aside>
+      </div>
+
+      <section class="manage-view hidden" id="manageView">
+        <div class="panel">
+          <div class="panel-title">
+            <h2 id="formTitle">新增话题</h2>
+            <button class="btn" id="resetFormBtn" type="button">新建</button>
+          </div>
+          <form class="form-grid" id="topicForm">
+            <input id="editId" type="hidden">
+            <div class="two">
+              <div class="field">
+                <label for="partInput">部分</label>
+                <select id="partInput" required>
+                  <option value="P1">Part 1</option>
+                  <option value="P2">Part 2</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="tagInput">标签</label>
+                <input id="tagInput" placeholder="例如：工作、经历">
+              </div>
+            </div>
+            <div class="field">
+              <label for="titleInput">题目</label>
+              <input id="titleInput" required placeholder="例如：Tidiness 或 Describe a person who inspired you">
+            </div>
+            <div class="field">
+              <label for="noteInput">全文 / 问题和答案</label>
+              <textarea id="noteInput" placeholder="P1 写问题和答案；P2 写小问题、要点和答案。"></textarea>
+            </div>
+            <label class="checkbox">
+              <input id="doneInput" type="checkbox">
+              已经练过
+            </label>
+            <button class="btn primary" type="submit">保存话题</button>
+          </form>
+        </div>
+
+        <div class="panel">
+          <div class="panel-title">
+            <h2>快速管理</h2>
+          </div>
+          <div class="manage-list" id="manageList"></div>
+        </div>
+      </section>
+
+      <section class="study-view hidden" id="studyView" aria-live="polite">
+        <div class="study-card">
+          <div class="study-head">
+            <div>
+              <span class="pill" id="studyPart">Part 2</span>
+              <h2 class="study-title" id="studyTitle"></h2>
+            </div>
+            <button class="btn" id="backToListBtn" type="button">返回题库</button>
+          </div>
+          <div class="meta" id="studyMeta"></div>
+          <div class="study-body" id="studyBody"></div>
+          <div class="study-actions">
+            <button class="btn" id="prevTopicBtn" type="button">上一题</button>
+            <button class="btn primary" id="markStudyDoneBtn" type="button">标记已练习</button>
+            <button class="btn" id="nextTopicBtn" type="button">下一题</button>
+            <button class="btn" id="editStudyBtn" type="button">编辑这题</button>
+            <button class="btn danger" id="deleteStudyBtn" type="button">删除这题</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const STORAGE_KEY = "ielts-speaking-topics-v1";
+    const state = {
+      topics: loadTopics(),
+      filter: "all",
+      query: "",
+      sort: "newest",
+      currentPage: 1,
+      pageSize: 8,
+      currentStudyId: ""
+    };
+
+    const els = {
+      totalCount: document.getElementById("totalCount"),
+      doneCount: document.getElementById("doneCount"),
+      allCount: document.getElementById("allCount"),
+      p1Count: document.getElementById("p1Count"),
+      p2Count: document.getElementById("p2Count"),
+      doneNavCount: document.getElementById("doneNavCount"),
+      fileInput: document.getElementById("fileInput"),
+      fileName: document.getElementById("fileName"),
+      importBtn: document.getElementById("importBtn"),
+      status: document.getElementById("status"),
+      topicList: document.getElementById("topicList"),
+      pager: document.getElementById("pager"),
+      libraryView: document.getElementById("libraryView"),
+      manageView: document.getElementById("manageView"),
+      libraryTab: document.getElementById("libraryTab"),
+      manageTab: document.getElementById("manageTab"),
+      manageList: document.getElementById("manageList"),
+      studyView: document.getElementById("studyView"),
+      studyPart: document.getElementById("studyPart"),
+      studyTitle: document.getElementById("studyTitle"),
+      studyMeta: document.getElementById("studyMeta"),
+      studyBody: document.getElementById("studyBody"),
+      backToListBtn: document.getElementById("backToListBtn"),
+      prevTopicBtn: document.getElementById("prevTopicBtn"),
+      nextTopicBtn: document.getElementById("nextTopicBtn"),
+      markStudyDoneBtn: document.getElementById("markStudyDoneBtn"),
+      editStudyBtn: document.getElementById("editStudyBtn"),
+      deleteStudyBtn: document.getElementById("deleteStudyBtn"),
+      searchInput: document.getElementById("searchInput"),
+      partSelect: document.getElementById("partSelect"),
+      sortSelect: document.getElementById("sortSelect"),
+      topicForm: document.getElementById("topicForm"),
+      formTitle: document.getElementById("formTitle"),
+      editId: document.getElementById("editId"),
+      partInput: document.getElementById("partInput"),
+      tagInput: document.getElementById("tagInput"),
+      titleInput: document.getElementById("titleInput"),
+      noteInput: document.getElementById("noteInput"),
+      doneInput: document.getElementById("doneInput"),
+      resetFormBtn: document.getElementById("resetFormBtn"),
+      exportBtn: document.getElementById("exportBtn"),
+      clearBtn: document.getElementById("clearBtn"),
+      importJsonBtn: document.getElementById("importJsonBtn"),
+      jsonImportInput: document.getElementById("jsonImportInput")
+    };
+
+    render();
+
+    els.libraryTab.addEventListener("click", showLibrary);
+
+    els.manageTab.addEventListener("click", showManage);
+
+    els.fileInput.addEventListener("change", () => {
+      const file = els.fileInput.files[0];
+      els.fileName.textContent = file ? file.name : "支持 .docx、.txt、.md。Part 2 讲义可按“每页/每个题目块”自动识别。";
+    });
+
+    els.importBtn.addEventListener("click", async () => {
+      const file = els.fileInput.files[0];
+      if (!file) {
+        setStatus("先选择一个 Word 或文本文件。", "warn");
+        return;
+      }
+
+      try {
+        setStatus("正在读取文件...");
+        const text = await readFileText(file);
+        const parsed = parseTopics(text);
+        if (!parsed.length) {
+          setStatus("没有识别到题目。可以检查每个话题开头是否有题目，例如“Describe...”或“描述/请描述...”。", "warn");
+          return;
+        }
+
+        const before = state.topics.length;
+        state.topics = mergeTopics(state.topics, parsed);
+        saveTopics();
+        render();
+        setStatus(`已识别 ${parsed.length} 条，新增 ${state.topics.length - before} 条，重复题目已自动跳过。`);
+      } catch (error) {
+        setStatus(error.message || "导入失败，请换成 .docx 或 .txt 再试。", "warn");
+      }
+    });
+
+    document.querySelectorAll("[data-filter-part]").forEach((button) => {
+      button.addEventListener("click", () => {
+        state.filter = button.dataset.filterPart;
+        state.currentPage = 1;
+        els.partSelect.value = state.filter;
+        render();
+        showLibrary();
+      });
+    });
+
+    els.searchInput.addEventListener("input", () => {
+      state.query = els.searchInput.value.trim().toLowerCase();
+      state.currentPage = 1;
+      render();
+    });
+
+    els.partSelect.addEventListener("change", () => {
+      state.filter = els.partSelect.value;
+      state.currentPage = 1;
+      render();
+    });
+
+    els.sortSelect.addEventListener("change", () => {
+      state.sort = els.sortSelect.value;
+      state.currentPage = 1;
+      render();
+    });
+
+    els.topicForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const id = els.editId.value || makeId();
+      const topic = {
+        id,
+        part: els.partInput.value,
+        title: els.titleInput.value.trim(),
+        note: els.noteInput.value.trim(),
+        tag: els.tagInput.value.trim(),
+        done: els.doneInput.checked,
+        createdAt: Date.now()
+      };
+
+      if (!topic.title) return;
+
+      const existing = state.topics.find((item) => item.id === id);
+      if (existing) {
+        Object.assign(existing, topic, { createdAt: existing.createdAt });
+      } else {
+        state.topics.unshift(topic);
+      }
+
+      saveTopics();
+      resetForm();
+      render();
+      showLibrary();
+      setStatus("已保存。");
+    });
+
+    els.resetFormBtn.addEventListener("click", resetForm);
+
+    els.exportBtn.addEventListener("click", () => {
+      const payload = JSON.stringify(state.topics, null, 2);
+      const blob = new Blob([payload], { type: "application/json;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `雅思口语题库-${new Date().toISOString().slice(0, 10)}.json`;
+      link.click();
+      URL.revokeObjectURL(url);
+      setStatus("已导出数据文件。");
+    });
+
+
+    els.importJsonBtn.addEventListener("click", () => {
+      els.jsonImportInput.click();
+    });
+
+    els.jsonImportInput.addEventListener("change", async () => {
+      const file = els.jsonImportInput.files[0];
+      if (!file) return;
+      try {
+        const content = await file.text();
+        const data = JSON.parse(content);
+        if (!Array.isArray(data)) throw new Error("备份文件格式错误");
+        state.topics = data;
+        saveTopics();
+        render();
+        setStatus(`成功恢复 ${data.length} 条题目。`);
+        els.jsonImportInput.value = "";
+      } catch (e) {
+        setStatus("导入失败：JSON文件无效。","warn");
+      }
+    });
+
+    els.clearBtn.addEventListener("click", () => {
+      if (!state.topics.length) return;
+      if (!confirm("确定要清空所有话题吗？")) return;
+      state.topics = [];
+      saveTopics();
+      resetForm();
+      render();
+      setStatus("已清空。");
+    });
+
+    els.topicList.addEventListener("click", (event) => {
+      const action = event.target.dataset.action;
+      const id = event.target.dataset.id;
+      if (!action || !id) return;
+      const topic = state.topics.find((item) => item.id === id);
+      if (!topic) return;
+
+      if (action === "study") {
+        openStudy(topic.id);
+      }
+
+      if (action === "edit") {
+        fillForm(topic);
+        showManage();
+      }
+
+      if (action === "toggle") {
+        topic.done = !topic.done;
+        saveTopics();
+        render();
+      }
+
+      if (action === "delete") {
+        if (!confirm("确定删除这个话题吗？")) return;
+        state.topics = state.topics.filter((item) => item.id !== id);
+        saveTopics();
+        render();
+        resetForm();
+        setStatus("已删除。");
+      }
+    });
+
+    els.manageList.addEventListener("click", (event) => {
+      const action = event.target.dataset.action;
+      const id = event.target.dataset.id;
+      if (!action || !id) return;
+      const topic = state.topics.find((item) => item.id === id);
+      if (!topic) return;
+
+      if (action === "edit") {
+        fillForm(topic);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      if (action === "study") {
+        openStudy(topic.id);
+      }
+
+      if (action === "delete") {
+        if (!confirm("确定删除这个话题吗？")) return;
+        state.topics = state.topics.filter((item) => item.id !== id);
+        saveTopics();
+        resetForm();
+        render();
+        setStatus("已删除。");
+      }
+    });
+
+    els.pager.addEventListener("click", (event) => {
+      const page = Number(event.target.dataset.page);
+      if (!page) return;
+      state.currentPage = page;
+      render();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    els.backToListBtn.addEventListener("click", showLibrary);
+
+    els.prevTopicBtn.addEventListener("click", () => {
+      moveStudy(-1);
+    });
+
+    els.nextTopicBtn.addEventListener("click", () => {
+      moveStudy(1);
+    });
+
+    els.markStudyDoneBtn.addEventListener("click", () => {
+      const topic = getCurrentStudyTopic();
+      if (!topic) return;
+      topic.done = !topic.done;
+      saveTopics();
+      render();
+      renderStudy();
+    });
+
+    els.editStudyBtn.addEventListener("click", () => {
+      const topic = getCurrentStudyTopic();
+      if (!topic) return;
+      fillForm(topic);
+      showManage();
+    });
+
+    els.deleteStudyBtn.addEventListener("click", () => {
+      const topic = getCurrentStudyTopic();
+      if (!topic || !confirm("确定删除这个话题吗？")) return;
+      const siblings = getStudySiblings(topic.part);
+      const index = siblings.findIndex((item) => item.id === topic.id);
+      state.topics = state.topics.filter((item) => item.id !== topic.id);
+      saveTopics();
+      render();
+
+      const next = siblings[index + 1] || siblings[index - 1];
+      if (next && state.topics.some((item) => item.id === next.id)) {
+        openStudy(next.id);
+      } else {
+        showLibrary();
+      }
+      setStatus("已删除。");
+    });
+
+    function loadTopics() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+      } catch {
+        return [];
+      }
+    }
+
+    function saveTopics() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state.topics));
+    }
+
+    function render() {
+      const p1 = state.topics.filter((item) => item.part === "P1").length;
+      const p2 = state.topics.filter((item) => item.part === "P2").length;
+      const done = state.topics.filter((item) => item.done).length;
+      els.totalCount.textContent = state.topics.length;
+      els.doneCount.textContent = done;
+      els.allCount.textContent = state.topics.length;
+      els.p1Count.textContent = p1;
+      els.p2Count.textContent = p2;
+      els.doneNavCount.textContent = done;
+
+      document.querySelectorAll("[data-filter-part]").forEach((button) => {
+        button.classList.toggle("active", button.dataset.filterPart === state.filter);
+      });
+
+      let items = getFilteredTopics();
+      const totalPages = Math.max(1, Math.ceil(items.length / state.pageSize));
+      if (state.currentPage > totalPages) state.currentPage = totalPages;
+      const start = (state.currentPage - 1) * state.pageSize;
+      const pageItems = items.slice(start, start + state.pageSize);
+
+      els.topicList.innerHTML = pageItems.length
+        ? pageItems.map(renderTopic).join("")
+        : `<div class="empty">还没有符合条件的话题。<br>可以先上传 Word，或者去“新增 / 管理”手动新增。</div>`;
+      renderPager(items.length, totalPages);
+      renderManageList();
+    }
+
+    function getFilteredTopics() {
+      let items = [...state.topics];
+      if (state.filter === "P1" || state.filter === "P2") {
+        items = items.filter((item) => item.part === state.filter);
+      }
+      if (state.filter === "done") {
+        items = items.filter((item) => item.done);
+      }
+      if (state.query) {
+        items = items.filter((item) => {
+          return [item.title, item.note, item.tag, item.part].join(" ").toLowerCase().includes(state.query);
+        });
+      }
+
+      items.sort((a, b) => {
+        if (state.sort === "oldest") return a.createdAt - b.createdAt;
+        if (state.sort === "az") return a.title.localeCompare(b.title);
+        return b.createdAt - a.createdAt;
+      });
+
+      return items;
+    }
+
+    function renderPager(totalItems, totalPages) {
+      if (totalItems <= state.pageSize) {
+        els.pager.innerHTML = "";
+        return;
+      }
+
+      const buttons = [];
+      buttons.push(`<button class="btn small" data-page="${Math.max(1, state.currentPage - 1)}" type="button" ${state.currentPage === 1 ? "disabled" : ""}>上一页</button>`);
+      buttons.push(`<span>第 ${state.currentPage} / ${totalPages} 页，共 ${totalItems} 个</span>`);
+      buttons.push(`<button class="btn small" data-page="${Math.min(totalPages, state.currentPage + 1)}" type="button" ${state.currentPage === totalPages ? "disabled" : ""}>下一页</button>`);
+      els.pager.innerHTML = buttons.join("");
+    }
+
+    function renderManageList() {
+      const items = [...state.topics].sort((a, b) => {
+        if (state.sort === "oldest") return a.createdAt - b.createdAt;
+        if (state.sort === "az") return a.title.localeCompare(b.title);
+        return b.createdAt - a.createdAt;
+      });
+
+      els.manageList.innerHTML = items.length
+        ? items.map(renderManageTopic).join("")
+        : `<div class="empty">还没有话题。先在左边新增，或回到题库浏览导入 Word。</div>`;
+    }
+
+    function renderTopic(topic) {
+      const tag = topic.tag ? `<span class="pill">${escapeHtml(topic.tag)}</span>` : "";
+      const note = topic.note ? `<p>${escapeHtml(topic.note)}</p>` : "";
+      return `
+        <article class="topic ${topic.done ? "done" : ""}">
+          <div>
+            <h3>${escapeHtml(topic.title)}</h3>
+            ${note}
+            <div class="meta">
+              <span class="pill ${topic.part.toLowerCase()}">${topic.part === "P1" ? "Part 1" : "Part 2"}</span>
+              ${tag}
+              ${topic.done ? `<span class="pill">已练习</span>` : ""}
+            </div>
+          </div>
+          <div class="topic-actions">
+            <button class="btn small primary" data-action="study" data-id="${topic.id}" type="button">学习</button>
+            <button class="btn small" data-action="edit" data-id="${topic.id}" type="button">编辑</button>
+            <button class="btn small" data-action="toggle" data-id="${topic.id}" type="button">${topic.done ? "取消练习" : "已练习"}</button>
+            <button class="btn small danger" data-action="delete" data-id="${topic.id}" type="button">删除</button>
+          </div>
+        </article>
+      `;
+    }
+
+    function renderManageTopic(topic) {
+      return `
+        <article class="manage-item">
+          <div>
+            <strong>${escapeHtml(topic.title)}</strong>
+            <div class="meta">
+              <span class="pill ${topic.part.toLowerCase()}">${topic.part === "P1" ? "Part 1" : "Part 2"}</span>
+              ${topic.done ? `<span class="pill">已练习</span>` : ""}
+            </div>
+          </div>
+          <div class="topic-actions">
+            <button class="btn small primary" data-action="study" data-id="${topic.id}" type="button">学习</button>
+            <button class="btn small" data-action="edit" data-id="${topic.id}" type="button">编辑</button>
+            <button class="btn small danger" data-action="delete" data-id="${topic.id}" type="button">删除</button>
+          </div>
+        </article>
+      `;
+    }
+
+    function openStudy(id) {
+      state.currentStudyId = id;
+      els.libraryView.classList.add("hidden");
+      els.manageView.classList.add("hidden");
+      els.studyView.classList.remove("hidden");
+      els.libraryTab.classList.remove("active");
+      els.manageTab.classList.remove("active");
+      renderStudy();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function showLibrary() {
+      els.studyView.classList.add("hidden");
+      els.manageView.classList.add("hidden");
+      els.libraryView.classList.remove("hidden");
+      els.libraryTab.classList.add("active");
+      els.manageTab.classList.remove("active");
+      state.currentStudyId = "";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function showManage() {
+      els.studyView.classList.add("hidden");
+      els.libraryView.classList.add("hidden");
+      els.manageView.classList.remove("hidden");
+      els.libraryTab.classList.remove("active");
+      els.manageTab.classList.add("active");
+      state.currentStudyId = "";
+      renderManageList();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function renderStudy() {
+      const topic = getCurrentStudyTopic();
+      if (!topic) {
+        showLibrary();
+        return;
+      }
+
+      const siblings = getStudySiblings(topic.part);
+      const index = siblings.findIndex((item) => item.id === topic.id);
+      els.studyPart.textContent = topic.part === "P1" ? "Part 1" : "Part 2";
+      els.studyPart.className = `pill ${topic.part.toLowerCase()}`;
+      els.studyTitle.textContent = topic.title;
+      els.studyMeta.innerHTML = [
+        topic.tag ? `<span class="pill">${escapeHtml(topic.tag)}</span>` : "",
+        topic.done ? `<span class="pill">已练习</span>` : "",
+        `<span class="pill">${index + 1} / ${siblings.length}</span>`
+      ].filter(Boolean).join("");
+      els.studyBody.innerHTML = formatStudyBody(topic);
+      els.prevTopicBtn.disabled = index <= 0;
+      els.nextTopicBtn.disabled = index >= siblings.length - 1;
+      els.markStudyDoneBtn.textContent = topic.done ? "取消已练习" : "标记已练习";
+    }
+
+    function formatStudyBody(topic) {
+      if (!topic.note) return `<p>这个话题还没有备注或答案。</p>`;
+
+      const lines = topic.note
+        .split("\n")
+        .map((line) => line.trim())
+        .filter(Boolean);
+
+      if (topic.part !== "P1") {
+        return lines.map((line) => `<p>${escapeHtml(line)}</p>`).join("");
+      }
+
+      let questionNumber = 0;
+      return lines.map((line) => {
+        if (isQuestionLine(line)) {
+          questionNumber += 1;
+          return `<p class="question">${questionNumber}. ${escapeHtml(stripQuestionNumber(line))}</p>`;
+        }
+        return `<p>${escapeHtml(line)}</p>`;
+      }).join("");
+    }
+
+    function isQuestionLine(line) {
+      const clean = stripQuestionNumber(line).trim();
+      if (!/[?？]/.test(clean)) return false;
+      return /^(do|does|did|are|is|was|were|can|could|would|will|what|when|where|why|how|who|which|have|has|had|should|if)\b/i.test(clean)
+        || /^[\u4e00-\u9fa5A-Za-z0-9\s/&,'’()-]*[?？]/.test(clean);
+    }
+
+    function stripQuestionNumber(line) {
+      return line.replace(/^\s*\d+[\.\)、)]\s*/, "");
+    }
+
+    function moveStudy(direction) {
+      const topic = getCurrentStudyTopic();
+      if (!topic) return;
+      const siblings = getStudySiblings(topic.part);
+      const index = siblings.findIndex((item) => item.id === topic.id);
+      const next = siblings[index + direction];
+      if (next) openStudy(next.id);
+    }
+
+    function getCurrentStudyTopic() {
+      return state.topics.find((item) => item.id === state.currentStudyId);
+    }
+
+    function getStudySiblings(part) {
+      return state.topics
+        .filter((item) => item.part === part)
+        .sort((a, b) => {
+          if (state.sort === "oldest") return a.createdAt - b.createdAt;
+          if (state.sort === "az") return a.title.localeCompare(b.title);
+          return b.createdAt - a.createdAt;
+        });
+    }
+
+    async function readFileText(file) {
+      const name = file.name.toLowerCase();
+      if (name.endsWith(".docx")) {
+        if (!window.mammoth) {
+          throw new Error("Word 解析库还没加载成功。请联网打开页面后再试，或先把 Word 内容复制成 txt 导入。");
+        }
+        const arrayBuffer = await file.arrayBuffer();
+        const result = await window.mammoth.extractRawText({ arrayBuffer });
+        return result.value;
+      }
+      return file.text();
+    }
+
+    function parseTopics(text) {
+      const normalized = normalizeImportedText(text);
+      const p1Topics = parseStructuredP1(normalized);
+      if (p1Topics.length && !looksLikePart2Document(normalized)) return p1Topics;
+
+      const pageTopics = parsePageStylePart2(normalized);
+      if (pageTopics.length) return pageTopics;
+      if (p1Topics.length) return p1Topics;
+
+      const lines = normalized
+        .split("\n")
+        .map((line) => cleanLine(line))
+        .filter(Boolean);
+
+      const topics = [];
+      let part = "";
+      let currentP2 = null;
+      let currentP1Group = "";
+      let pendingPart2Label = "";
+
+      for (const line of lines) {
+        const heading = detectPart(line);
+        if (heading) {
+          part = heading;
+          if (currentP2) topics.push(currentP2);
+          currentP2 = null;
+          currentP1Group = "";
+          pendingPart2Label = "";
+          continue;
+        }
+
+        if (!part && isChineseTopicLabel(line)) {
+          pendingPart2Label = line;
+          continue;
+        }
+
+        if (!part) part = guessPart(line);
+
+        if (part === "P2") {
+          if (!currentP2 || isPart2TopicStart(line, currentP2.note)) {
+            if (currentP2) topics.push(currentP2);
+            currentP2 = makeTopic("P2", [pendingPart2Label, line].filter(Boolean).join(" / "), "");
+            pendingPart2Label = "";
+          } else {
+            currentP2.note = [currentP2.note, line].filter(Boolean).join("\n");
+          }
+        } else {
+          if (isPart2TopicStart(line, "")) {
+            part = "P2";
+            if (currentP2) topics.push(currentP2);
+            currentP2 = makeTopic("P2", [pendingPart2Label, line].filter(Boolean).join(" / "), "");
+            pendingPart2Label = "";
+            continue;
+          }
+          if (isP1GroupTitle(line)) {
+            currentP1Group = line;
+            continue;
+          }
+          const topic = makeTopic("P1", line, "");
+          topic.tag = currentP1Group;
+          topics.push(topic);
+        }
+      }
+
+      if (currentP2) topics.push(currentP2);
+      return topics.filter((topic) => topic.title.length > 1);
+    }
+
+    function parseStructuredP1(text) {
+      const sections = text
+        .split(/\[\[PAGE_BREAK\]\]/)
+        .map((section) => section.trim())
+        .filter(Boolean);
+      const topics = [];
+
+      for (const section of sections) {
+        topics.push(...parseP1Section(section));
+      }
+
+      return topics;
+    }
+
+    function parseP1Section(text) {
+      const rawLines = text.split("\n");
+      const lines = rawLines
+        .map((line) => cleanLine(line))
+        .filter((line) => line && !detectPart(line) && !isPageNumber(line));
+
+      const topics = [];
+      let current = null;
+
+      for (let index = 0; index < lines.length; index += 1) {
+        const line = lines[index];
+        const nextLine = lines[index + 1] || "";
+
+        if (isP1TopicStart(line, nextLine)) {
+          if (current) topics.push(current);
+          current = makeTopic("P1", line, "");
+          continue;
+        }
+
+        if (current) {
+          current.note = [current.note, line].filter(Boolean).join("\n");
+        }
+      }
+
+      if (current) topics.push(current);
+
+      return topics.filter((topic) => {
+        const questionCount = (topic.note.match(/[?？]/g) || []).length;
+        return topic.title.length <= 60 && questionCount >= 1;
+      });
+    }
+
+    function normalizeImportedText(text) {
+      return text
+        .replace(/\r/g, "\n")
+        .replace(/\f/g, "\n[[PAGE_BREAK]]\n")
+        .replace(/\u000c/g, "\n[[PAGE_BREAK]]\n")
+        .replace(/[ \t]+\n/g, "\n");
+    }
+
+    function parsePageStylePart2(text) {
+      const blocks = splitTopicBlocks(text);
+      if (blocks.length < 2) return [];
+
+      const topics = blocks
+        .map((block) => parsePart2Block(block))
+        .filter(Boolean);
+
+      if (topics.length >= 2) return topics;
+      if (blocks.length >= 2 && topics.length === 1 && looksLikePart2Document(text)) return topics;
+      return [];
+    }
+
+    function splitTopicBlocks(text) {
+      const pageBlocks = text
+        .split(/\[\[PAGE_BREAK\]\]/)
+        .map((block) => block.trim())
+        .filter(Boolean);
+
+      if (pageBlocks.length >= 2) return pageBlocks;
+
+      const lines = text.split("\n");
+      const blocks = [];
+      let current = [];
+
+      for (let index = 0; index < lines.length; index += 1) {
+        const line = cleanLine(lines[index]);
+        if (!line) continue;
+        const nextLine = cleanLine(lines[index + 1] || "");
+
+        if (current.length && isChineseTopicLabel(line) && isPart2TopicStart(nextLine, "")) {
+          blocks.push(current.join("\n"));
+          current = [line];
+          continue;
+        }
+
+        if (current.length && isPart2TopicStart(line, current.join("\n")) && !isOnlyTopicLabels(current)) {
+          blocks.push(current.join("\n"));
+          current = [line];
+        } else {
+          current.push(line);
+        }
+      }
+
+      if (current.length) blocks.push(current.join("\n"));
+      return blocks;
+    }
+
+    function parsePart2Block(block) {
+      const lines = block
+        .split("\n")
+        .map((line) => cleanLine(line))
+        .filter((line) => line && !detectPart(line) && !isPageNumber(line));
+
+      if (!lines.length) return null;
+
+      const titleIndex = findPart2TitleIndex(lines);
+      if (titleIndex < 0) return null;
+
+      const titleLines = collectTitleLines(lines, titleIndex);
+      const title = titleLines.join(" / ");
+      const titleSet = new Set(titleLines);
+      const noteLines = lines.filter((line) => !titleSet.has(line));
+      const note = noteLines.join("\n");
+      return makeTopic("P2", title, note);
+    }
+
+    function findPart2TitleIndex(lines) {
+      const direct = lines.findIndex((line) => isPart2TopicStart(line, ""));
+      if (direct >= 0) return direct;
+      return lines.findIndex((line) => /[?？]$/.test(line) || /^话题[:：]/.test(line) || /^题目[:：]/.test(line) || /^(描述|请描述)/.test(line));
+    }
+
+    function collectTitleLines(lines, titleIndex) {
+      const title = [lines[titleIndex]];
+      const previous = lines[titleIndex - 1];
+      const next = lines[titleIndex + 1];
+
+      if (previous && isChineseTopicLabel(previous) && !isCueOrAnswerLine(previous)) {
+        title.unshift(previous);
+      }
+
+      if (next && /^describe\b/i.test(next) && !/^describe\b/i.test(lines[titleIndex])) {
+        title.push(next);
+      }
+
+      return title;
+    }
+
+    function detectPart(line) {
+      const compact = line.replace(/\s+/g, "").toLowerCase();
+      if (/^(p|part)?1$/.test(compact) || compact.includes("part1") || compact.includes("第一部分")) return "P1";
+      if (/^(p|part)?2$/.test(compact) || compact.includes("part2") || compact.includes("第二部分")) return "P2";
+      return "";
+    }
+
+    function guessPart(line) {
+      return isPart2TopicStart(line, "") ? "P2" : "P1";
+    }
+
+    function isPart2TopicStart(line, currentNote) {
+      if (/^(describe|talk about|tell me about)\b/i.test(line)) return true;
+      if (/^(描述|请描述|谈谈|说说|介绍|讲述)一个?/.test(line)) return true;
+      if (/^话题[:：]/.test(line)) return true;
+      if (/^题目[:：]/.test(line)) return true;
+      if (currentNote && isCueOrAnswerLine(line)) return false;
+      return false;
+    }
+
+    function isCueOrAnswerLine(line) {
+      return /^(you should say|you should explain|where\b|when\b|who\b|what\b|why\b|how\b|and explain|answer|sample answer|答案|回答|小问题|提示|要点|你应该说|你需要说|包括|并解释)/i.test(line)
+        || /^[•\-–]\s*/.test(line)
+        || line.includes(";")
+        || /[？?]$/.test(line);
+    }
+
+    function isP1GroupTitle(line) {
+      return !/[?？]$/.test(line) && line.length <= 40 && !isPart2TopicStart(line, "") && /^[\u4e00-\u9fa5A-Za-z\s/&-]+$/.test(line);
+    }
+
+    function isP1TopicStart(line, nextLine) {
+      if (!line || !nextLine) return false;
+      if (!/[?？]$/.test(nextLine)) return false;
+      if (/[?？.!。；;]$/.test(line)) return false;
+      if (isCueOrAnswerLine(line) || isPart2TopicStart(line, "")) return false;
+      if (line.split(/\s+/).length > 8) return false;
+      return /^[\u4e00-\u9fa5A-Za-z0-9\s/&,'’()-]+$/.test(line) && line.length <= 60;
+    }
+
+    function isOnlyTopicLabels(lines) {
+      return lines.length <= 3 && lines.every((line) => isChineseTopicLabel(line) || /^part\s*2$/i.test(line));
+    }
+
+    function looksLikePart2Document(text) {
+      return /(describe|you should say|答案|小问题|你应该说|请描述|描述一个)/i.test(text);
+    }
+
+    function isChineseTopicLabel(line) {
+      return /^[\u4e00-\u9fa5《》“”""、：:\s]{2,32}$/.test(line) && !/[？?]$/.test(line);
+    }
+
+    function isPageNumber(line) {
+      return /^(第?\s*\d+\s*页?|page\s*\d+)$/i.test(line);
+    }
+
+    function cleanLine(line) {
+      return line
+        .replace(/\u00a0/g, " ")
+        .replace(/\[\[PAGE_BREAK\]\]/g, "")
+        .replace(/^[\s\t]*(?:\d+[\.\)、)]|[A-Za-z][\.\)、)]|[•·\-–])\s*/, "")
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+
+    function makeTopic(part, title, note) {
+      return {
+        id: makeId(),
+        part,
+        title,
+        note,
+        tag: "",
+        done: false,
+        createdAt: Date.now() + Math.floor(Math.random() * 1000)
+      };
+    }
+
+    function mergeTopics(existing, incoming) {
+      const seen = new Set(existing.map((item) => `${item.part}|${item.title.toLowerCase()}`));
+      const fresh = incoming.filter((item) => {
+        const key = `${item.part}|${item.title.toLowerCase()}`;
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      });
+      return [...fresh, ...existing];
+    }
+
+    function fillForm(topic) {
+      els.formTitle.textContent = "编辑话题";
+      els.editId.value = topic.id;
+      els.partInput.value = topic.part;
+      els.tagInput.value = topic.tag || "";
+      els.titleInput.value = topic.title;
+      els.noteInput.value = topic.note || "";
+      els.doneInput.checked = topic.done;
+      els.titleInput.focus();
+    }
+
+    function resetForm() {
+      els.formTitle.textContent = "新增话题";
+      els.topicForm.reset();
+      els.editId.value = "";
+      els.partInput.value = "P1";
+    }
+
+    function setStatus(message, type) {
+      els.status.textContent = message;
+      els.status.style.color = type === "warn" ? "var(--red)" : "var(--muted)";
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function makeId() {
+      return `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
+    }
+  </script>
+</body>
+</html>
